@@ -1,0 +1,15 @@
+.upload-page {
+    text-align: center;
+    padding: 30px;
+  }
+  
+  .upload-page input {
+    margin: 20px 0;
+  }
+  
+  .preview {
+    max-width: 300px;
+    margin: 10px;
+    border: 1px solid #ddd;
+  }
+  

@@ -1,0 +1,19 @@
+.homepage {
+    text-align: center;
+    padding: 40px;
+  }
+  
+  .homepage h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .homepage button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #61dafb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
