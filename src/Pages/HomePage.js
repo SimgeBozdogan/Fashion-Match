@@ -16,12 +16,12 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const sidebarCategories = [
-    { id: 'all', label: 'Tümü', icon: '👔' },
-    { id: 'top', label: 'Kıyafetlerim', icon: '👕', keywords: ['top', 'shirt', 't-shirt', 'blouse', 'sweater', 'tshirt'] },
-    { id: 'bottom', label: 'Alt Giyim', icon: '👖', keywords: ['bottom', 'pants', 'jeans', 'skirt', 'shorts', 'pantolon'] },
-    { id: 'shoes', label: 'Ayakkabılarım', icon: '👠', keywords: ['shoes', 'sneakers', 'boots', 'heels', 'shoe', 'ayakkabi'] },
-    { id: 'outerwear', label: 'Dış Giyim', icon: '🧥', keywords: ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear', 'hırka', 'ceket'] },
-    { id: 'accessories', label: 'Takılarım & Aksesuarlarım', icon: '💍', keywords: ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf', 'aksesuar', 'canta', 'kemer', 'sapka', 'atki'] }
+    { id: 'all', label: 'Tümü', icon: '👔', itemLabel: 'kıyafet' },
+    { id: 'top', label: 'Kıyafetlerim', icon: '👕', keywords: ['top', 'shirt', 't-shirt', 'blouse', 'sweater', 'tshirt'], itemLabel: 'kıyafet' },
+    { id: 'bottom', label: 'Alt Giyim', icon: '👖', keywords: ['bottom', 'pants', 'jeans', 'skirt', 'shorts', 'pantolon'], itemLabel: 'parça' },
+    { id: 'shoes', label: 'Ayakkabılarım', icon: '👠', keywords: ['shoes', 'sneakers', 'boots', 'heels', 'shoe', 'ayakkabi'], itemLabel: 'ayakkabı' },
+    { id: 'outerwear', label: 'Dış Giyim', icon: '🧥', keywords: ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear', 'hırka', 'ceket'], itemLabel: 'parça' },
+    { id: 'accessories', label: 'Takılarım & Aksesuarlarım', icon: '💍', keywords: ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf', 'aksesuar', 'canta', 'kemer', 'sapka', 'atki'], itemLabel: 'parça' }
   ];
 
   useEffect(() => {
@@ -188,7 +188,12 @@ const HomePage = () => {
           <h2>
             {activeSidebarCategory === 'all' 
               ? `Gardrobum (${wardrobe.length} kıyafet)`
-              : `${sidebarCategories.find(c => c.id === activeSidebarCategory)?.label} (${getCategoryCount(activeSidebarCategory)} kıyafet)`
+              : (() => {
+                  const category = sidebarCategories.find(c => c.id === activeSidebarCategory);
+                  const count = getCategoryCount(activeSidebarCategory);
+                  const itemLabel = category?.itemLabel || 'parça';
+                  return `${category?.label} (${count} ${itemLabel})`;
+                })()
             }
           </h2>
 
