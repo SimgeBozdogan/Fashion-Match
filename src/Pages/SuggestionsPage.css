@@ -1,0 +1,173 @@
+.suggestions-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.suggestions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.suggestions-header h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.back-btn:hover {
+  background-color: #4fa8c5;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.no-suggestions {
+  text-align: center;
+  padding: 50px;
+}
+
+.no-suggestions p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.no-suggestions button {
+  padding: 12px 24px;
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.combinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.combination-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.combination-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #61dafb;
+  padding-bottom: 10px;
+}
+
+.combination-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.item-preview {
+  flex: 1;
+  min-width: 100px;
+  text-align: center;
+}
+
+.item-image {
+  width: 100%;
+  max-width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 8px;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+  margin: 5px 0;
+}
+
+.item-category {
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.missing-items, .suggestions-list {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.missing-items h4, .suggestions-list h4 {
+  font-size: 1rem;
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+
+.missing-item, .suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff3cd;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.missing-item p, .suggestion-item p {
+  margin: 0;
+  color: #856404;
+  font-size: 0.9rem;
+}
+
+.purchase-btn {
+  padding: 6px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.purchase-btn:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 768px) {
+  .combinations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .suggestions-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}
+
