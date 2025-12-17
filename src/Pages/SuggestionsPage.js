@@ -75,16 +75,19 @@ const SuggestionsPage = () => {
 
               {combination.missingItems && combination.missingItems.length > 0 && (
                 <div className="missing-items">
-                  <h4>Eksik Kıyafetler:</h4>
+                  <h4>Bu Parçayı da Ekleyebilirsiniz:</h4>
                   {combination.missingItems.map((missing, missingIndex) => (
                     <div key={missingIndex} className="missing-item">
-                      <p>{missing.description || missing.category}</p>
+                      <div className="missing-item-info">
+                        <p className="missing-item-name">{missing.itemName || missing.category}</p>
+                        <p className="missing-item-desc">{missing.description || `${missing.category} bu kombinasyonu tamamlar`}</p>
+                      </div>
                       {missing.purchaseLink && (
                         <button 
                           className="purchase-btn"
                           onClick={() => handlePurchaseLink(missing.purchaseLink)}
                         >
-                          Satın Al
+                          Mağazada Gör
                         </button>
                       )}
                     </div>
