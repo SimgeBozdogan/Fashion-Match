@@ -227,23 +227,28 @@ function getPurchaseLink(category, style, color) {
 function generateCombinations(wardrobeItems) {
   const combinations = [];
   const categories = {
-    'top': wardrobeItems.filter(item => ['top', 'shirt', 't-shirt', 'blouse', 'sweater'].includes(item.category?.toLowerCase())),
-    'bottom': wardrobeItems.filter(item => ['bottom', 'pants', 'jeans', 'skirt', 'shorts'].includes(item.category?.toLowerCase())),
-    'shoes': wardrobeItems.filter(item => ['shoes', 'sneakers', 'boots', 'heels'].includes(item.category?.toLowerCase())),
-    'outerwear': wardrobeItems.filter(item => ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear'].includes(item.category?.toLowerCase())),
-    'accessories': wardrobeItems.filter(item => ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf'].includes(item.category?.toLowerCase()))
+    'top': wardrobeItems.filter(item => ['top', 'shirt', 't-shirt', 'blouse', 'sweater', 'tshirt'].includes(item.category?.toLowerCase())),
+    'bottom': wardrobeItems.filter(item => ['bottom', 'pants', 'jeans', 'skirt', 'shorts', 'pantolon', 'trouser'].includes(item.category?.toLowerCase())),
+    'shoes': wardrobeItems.filter(item => ['shoes', 'sneakers', 'boots', 'heels', 'shoe', 'ayakkabi'].includes(item.category?.toLowerCase())),
+    'outerwear': wardrobeItems.filter(item => ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear', 'hırka', 'ceket'].includes(item.category?.toLowerCase())),
+    'accessories': wardrobeItems.filter(item => ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf', 'aksesuar', 'canta', 'kemer'].includes(item.category?.toLowerCase()))
   };
 
   const maxCombinations = 20;
 
-  for (let i = 0; i < categories.top.length && combinations.length < maxCombinations; i++) {
-    for (let j = 0; j < categories.bottom.length && combinations.length < maxCombinations; j++) {
-      const combination = {
-        items: [categories.top[i], categories.bottom[j]].filter(Boolean),
-        name: `${categories.top[i]?.name || 'Üst'} + ${categories.bottom[j]?.name || 'Alt'}`,
-        missingItems: [],
-        suggestions: []
-      };
+  if (categories.top.length === 0 && categories.bottom.length === 0) {
+    return combinations;
+  }
+
+  if (categories.top.length > 0 && categories.bottom.length > 0) {
+    for (let i = 0; i < categories.top.length && combinations.length < maxCombinations; i++) {
+      for (let j = 0; j < categories.bottom.length && combinations.length < maxCombinations; j++) {
+        const combination = {
+          items: [categories.top[i], categories.bottom[j]].filter(Boolean),
+          name: `${categories.top[i]?.name || 'Üst'} + ${categories.bottom[j]?.name || 'Alt'}`,
+          missingItems: [],
+          suggestions: []
+        };
 
       if (categories.shoes.length > 0) {
         const randomShoes = categories.shoes[Math.floor(Math.random() * categories.shoes.length)];
@@ -286,6 +291,83 @@ function generateCombinations(wardrobeItems) {
       }
 
       combinations.push(combination);
+    }
+    }
+  } else if (categories.top.length >= 2) {
+    for (let i = 0; i < categories.top.length && combinations.length < maxCombinations; i++) {
+      for (let j = i + 1; j < categories.top.length && combinations.length < maxCombinations; j++) {
+        const item1 = categories.top[i];
+        const item2 = categories.top[j];
+        
+        const item1Name = (item1?.name || '').toLowerCase();
+        const item2Name = (item2?.name || '').toLowerCase();
+        const hasBottomItem = item1Name.includes('pantolon') || item1Name.includes('pants') || 
+                             item1Name.includes('etek') || item1Name.includes('skirt') ||
+                             item1Name.includes('short') || item1Name.includes('şort') ||
+                             item2Name.includes('pantolon') || item2Name.includes('pants') ||
+                             item2Name.includes('etek') || item2Name.includes('skirt') ||
+                             item2Name.includes('short') || item2Name.includes('şort');
+        
+        const combination = {
+          items: [item1, item2].filter(Boolean),
+          name: `${item1?.name || 'Üst'} + ${item2?.name || 'Üst'}`,
+          missingItems: [],
+          suggestions: []
+        };
+
+        if (!hasBottomItem) {
+          combination.missingItems.push({
+            category: 'bottom',
+            itemName: 'Alt Giyim',
+            description: 'Bir pantolon veya etek bu kombinasyonu tamamlar',
+            purchaseLink: 'https://www.trendyol.com/alt-giyim'
+          });
+        }
+
+        if (categories.shoes.length > 0) {
+          combination.items.push(categories.shoes[Math.floor(Math.random() * categories.shoes.length)]);
+        } else {
+          combination.missingItems.push({
+            category: 'shoes',
+            itemName: 'Ayakkabı',
+            description: 'Ayakkabı bu kombinasyonu tamamlar',
+            purchaseLink: getPurchaseLink('shoes', 'casual', 'unknown')
+          });
+        }
+
+        combinations.push(combination);
+      }
+    }
+  } else if (categories.bottom.length >= 2) {
+    for (let i = 0; i < categories.bottom.length && combinations.length < maxCombinations; i++) {
+      for (let j = i + 1; j < categories.bottom.length && combinations.length < maxCombinations; j++) {
+        const combination = {
+          items: [categories.bottom[i], categories.bottom[j]].filter(Boolean),
+          name: `${categories.bottom[i]?.name || 'Alt'} + ${categories.bottom[j]?.name || 'Alt'}`,
+          missingItems: [],
+          suggestions: []
+        };
+
+        combination.missingItems.push({
+          category: 'top',
+          itemName: 'Üst Giyim',
+          description: 'Bir üst giyim parçası bu kombinasyonu tamamlar',
+          purchaseLink: 'https://www.trendyol.com/ust-giyim'
+        });
+
+        if (categories.shoes.length > 0) {
+          combination.items.push(categories.shoes[Math.floor(Math.random() * categories.shoes.length)]);
+        } else {
+          combination.missingItems.push({
+            category: 'shoes',
+            itemName: 'Ayakkabı',
+            description: 'Ayakkabı bu kombinasyonu tamamlar',
+            purchaseLink: getPurchaseLink('shoes', 'casual', 'unknown')
+          });
+        }
+
+        combinations.push(combination);
+      }
     }
   }
 

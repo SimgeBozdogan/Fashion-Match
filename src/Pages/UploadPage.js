@@ -73,7 +73,7 @@ const UploadPage = () => {
     <div className="upload-page">
       <div className="upload-container">
         <h2>Kıyafetini Yükle</h2>
-        <p className="upload-description">Gardırobuna kıyafet ekle, kombinasyon önerilerini gör</p>
+        <p className="upload-description">Gardrobuna kıyafet ekle, kombinasyon önerilerini gör</p>
         
         <form onSubmit={handleSubmit} className="upload-form">
           <div className="form-group">

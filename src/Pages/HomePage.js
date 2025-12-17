@@ -12,7 +12,17 @@ const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedColor, setSelectedColor] = useState('all');
   const [selectedStyle, setSelectedStyle] = useState('all');
+  const [activeSidebarCategory, setActiveSidebarCategory] = useState('all');
   const navigate = useNavigate();
+
+  const sidebarCategories = [
+    { id: 'all', label: 'Tümü', icon: '👔' },
+    { id: 'top', label: 'Kıyafetlerim', icon: '👕', keywords: ['top', 'shirt', 't-shirt', 'blouse', 'sweater', 'tshirt'] },
+    { id: 'bottom', label: 'Alt Giyim', icon: '👖', keywords: ['bottom', 'pants', 'jeans', 'skirt', 'shorts', 'pantolon'] },
+    { id: 'shoes', label: 'Ayakkabılarım', icon: '👠', keywords: ['shoes', 'sneakers', 'boots', 'heels', 'shoe', 'ayakkabi'] },
+    { id: 'outerwear', label: 'Dış Giyim', icon: '🧥', keywords: ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear', 'hırka', 'ceket'] },
+    { id: 'accessories', label: 'Takılarım & Aksesuarlarım', icon: '💍', keywords: ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf', 'aksesuar', 'canta', 'kemer', 'sapka', 'atki'] }
+  ];
 
   useEffect(() => {
     loadWardrobe();
@@ -26,7 +36,7 @@ const HomePage = () => {
 
   useEffect(() => {
     filterWardrobe();
-  }, [wardrobe, searchTerm, selectedCategory, selectedColor, selectedStyle]);
+  }, [wardrobe, searchTerm, selectedCategory, selectedColor, selectedStyle, activeSidebarCategory]);
 
   const loadWardrobe = async () => {
     try {
@@ -58,6 +68,18 @@ const HomePage = () => {
   const filterWardrobe = () => {
     let filtered = [...wardrobe];
 
+    if (activeSidebarCategory !== 'all') {
+      const category = sidebarCategories.find(cat => cat.id === activeSidebarCategory);
+      if (category && category.keywords) {
+        filtered = filtered.filter(item => 
+          category.keywords.some(keyword => 
+            item.category?.toLowerCase().includes(keyword.toLowerCase()) ||
+            item.name?.toLowerCase().includes(keyword.toLowerCase())
+          )
+        );
+      }
+    }
+
     if (searchTerm) {
       filtered = filtered.filter(item =>
         (item.name || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -85,6 +107,18 @@ const HomePage = () => {
       .filter(color => color && color !== 'unknown')
       .filter((color, index, self) => self.indexOf(color) === index);
     return colors;
+  };
+
+  const getCategoryCount = (categoryId) => {
+    if (categoryId === 'all') return wardrobe.length;
+    const category = sidebarCategories.find(cat => cat.id === categoryId);
+    if (!category || !category.keywords) return 0;
+    return wardrobe.filter(item => 
+      category.keywords.some(keyword => 
+        item.category?.toLowerCase().includes(keyword.toLowerCase()) ||
+        item.name?.toLowerCase().includes(keyword.toLowerCase())
+      )
+    ).length;
   };
 
   const handleDelete = async (id) => {
@@ -119,7 +153,7 @@ const HomePage = () => {
     <div className="homepage">
       <div className="hero-section">
         <h1>Fashion Match</h1>
-        <p className="hero-subtitle">Gardırobunu yönet, eksiklerini fark et, harika kombinasyonlar oluştur!</p>
+        <p className="hero-subtitle">Gardrobunu yönet, eksiklerini fark et, harika kombinasyonlar oluştur!</p>
         <div className="hero-actions">
           <button className="primary-btn" onClick={() => navigate('/upload')}>
             Kıyafet Ekle
@@ -133,8 +167,30 @@ const HomePage = () => {
       </div>
 
       <div className="main-content">
+        <div className="categories-sidebar">
+          <h3>Kategoriler</h3>
+          <ul className="category-list">
+            {sidebarCategories.map(category => (
+              <li 
+                key={category.id}
+                className={`category-item ${activeSidebarCategory === category.id ? 'active' : ''}`}
+                onClick={() => setActiveSidebarCategory(category.id)}
+              >
+                <span className="category-icon">{category.icon}</span>
+                <span className="category-label">{category.label}</span>
+                <span className="category-count">({getCategoryCount(category.id)})</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <div className="wardrobe-section">
-          <h2>Gardırobunuz ({wardrobe.length} kıyafet)</h2>
+          <h2>
+            {activeSidebarCategory === 'all' 
+              ? `Gardrobum (${wardrobe.length} kıyafet)`
+              : `${sidebarCategories.find(c => c.id === activeSidebarCategory)?.label} (${getCategoryCount(activeSidebarCategory)} kıyafet)`
+            }
+          </h2>
 
           {wardrobe.length > 0 && (
             <div className="filters-section">
@@ -188,8 +244,11 @@ const HomePage = () => {
                   <option value="minimalist">Minimalist</option>
                 </select>
 
-                {(searchTerm || selectedCategory !== 'all' || selectedColor !== 'all' || selectedStyle !== 'all') && (
-                  <button onClick={clearFilters} className="clear-filters-btn">
+                {(searchTerm || selectedCategory !== 'all' || selectedColor !== 'all' || selectedStyle !== 'all' || activeSidebarCategory !== 'all') && (
+                  <button onClick={() => {
+                    clearFilters();
+                    setActiveSidebarCategory('all');
+                  }} className="clear-filters-btn">
                     Filtreleri Temizle
                   </button>
                 )}
@@ -207,14 +266,17 @@ const HomePage = () => {
             <div className="loading">Yükleniyor...</div>
           ) : wardrobe.length === 0 ? (
             <div className="empty-wardrobe">
-              <p>Henüz gardırobunuza kıyafet eklenmemiş.</p>
+              <p>Henüz gardrobuna kıyafet eklenmemiş.</p>
               <p>İlk kıyafetinizi ekleyerek başlayın!</p>
               <button onClick={() => navigate('/upload')}>Kıyafet Ekle</button>
             </div>
           ) : filteredWardrobe.length === 0 ? (
             <div className="empty-wardrobe">
               <p>Filtrelere uygun kıyafet bulunamadı.</p>
-              <button onClick={clearFilters}>Filtreleri Temizle</button>
+              <button onClick={() => {
+                clearFilters();
+                setActiveSidebarCategory('all');
+              }}>Filtreleri Temizle</button>
             </div>
           ) : (
             <div className="wardrobe-grid">
@@ -259,7 +321,12 @@ const HomePage = () => {
             ) : (
               <div className="combinations-list">
                 {combinations.slice(0, 5).map((combination, index) => (
-                  <div key={index} className="combination-preview">
+                  <div 
+                    key={index} 
+                    className="combination-preview"
+                    onClick={() => navigate('/suggestions')}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <h4>{combination.name}</h4>
                     <div className="combination-items-preview">
                       {combination.items.map((item, itemIndex) => (
@@ -274,12 +341,15 @@ const HomePage = () => {
                       ))}
                     </div>
                     {combination.missingItems && combination.missingItems.length > 0 && (
-                      <div className="missing-items-preview">
+                      <div className="missing-items-preview" onClick={(e) => e.stopPropagation()}>
                         <p className="missing-hint">Eksik: {combination.missingItems[0].itemName}</p>
                         {combination.missingItems[0].purchaseLink && (
                           <button
                             className="purchase-link-btn"
-                            onClick={() => handlePurchaseLink(combination.missingItems[0].purchaseLink)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handlePurchaseLink(combination.missingItems[0].purchaseLink);
+                            }}
                           >
                             Mağazada Gör
                           </button>

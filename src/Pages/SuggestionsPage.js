@@ -13,7 +13,9 @@ const SuggestionsPage = () => {
 
   const generateSuggestions = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/suggestions/generate');
+      const response = await fetch('http://localhost:5001/api/suggestions/generate', {
+        method: 'POST'
+      });
       const data = await response.json();
       setCombinations(data.combinations || []);
       setLoading(false);
@@ -46,7 +48,7 @@ const SuggestionsPage = () => {
 
       {combinations.length === 0 ? (
         <div className="no-suggestions">
-          <p>Henüz yeterli kıyafet eklenmemiş. Önce gardırobunuza kıyafet ekleyin!</p>
+          <p>Henüz yeterli kıyafet eklenmemiş. Önce gardrobuna kıyafet ekleyin!</p>
           <button onClick={() => navigate('/upload')}>Kıyafet Ekle</button>
         </div>
       ) : (
