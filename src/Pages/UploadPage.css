@@ -1,15 +1,136 @@
 .upload-page {
-    text-align: center;
-    padding: 30px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 20px;
+}
+
+.upload-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.upload-container h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.upload-description {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"],
+.form-group select {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.form-group input[type="file"] {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.image-preview {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.preview {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn,
+.submit-btn {
+  flex: 1;
+  padding: 14px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .upload-container {
+    padding: 30px 20px;
   }
-  
-  .upload-page input {
-    margin: 20px 0;
+
+  .upload-container h2 {
+    font-size: 1.5rem;
   }
-  
-  .preview {
-    max-width: 300px;
-    margin: 10px;
-    border: 1px solid #ddd;
+
+  .form-actions {
+    flex-direction: column;
   }
-  
+}

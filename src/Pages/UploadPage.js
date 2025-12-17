@@ -4,25 +4,153 @@ import { useNavigate } from 'react-router-dom';
 
 const UploadPage = () => {
   const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('other');
+  const [color, setColor] = useState('');
+  const [style, setStyle] = useState('casual');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const categories = ['top', 'bottom', 'shoes', 'outerwear', 'accessories', 'other'];
+  const styles = ['casual', 'formal', 'sporty', 'elegant', 'bohemian', 'minimalist'];
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setImageFile(file);
       setImage(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = () => {
-    navigate('/suggestions');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!imageFile) {
+      alert('Lütfen bir resim seçin');
+      return;
+    }
+
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    formData.append('name', name || 'Untitled Item');
+    formData.append('category', category);
+    formData.append('color', color || 'unknown');
+    formData.append('style', style);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/wardrobe/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        await response.json();
+        navigate('/suggestions');
+      } else {
+        alert('Yükleme hatası: ' + response.statusText);
+      }
+    } catch (error) {
+      console.error('Error uploading:', error);
+      alert('Yükleme sırasında bir hata oluştu');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="upload-page">
-      <h2>Kıyafetini Yükle</h2>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
-      {image && <img src={image} alt="preview" className="preview" />}
-      <button onClick={handleSubmit}>Kombinleri Gör</button>
+      <div className="upload-container">
+        <h2>Kıyafetini Yükle</h2>
+        <p className="upload-description">Gardırobuna kıyafet ekle, kombinasyon önerilerini gör</p>
+        
+        <form onSubmit={handleSubmit} className="upload-form">
+          <div className="form-group">
+            <label>Resim Seç *</label>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={handleImageChange}
+              required
+            />
+            {image && (
+              <div className="image-preview">
+                <img src={image} alt="preview" className="preview" />
+              </div>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label>İsim (Opsiyonel)</label>
+            <input 
+              type="text" 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Örn: Beyaz Gömlek"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Kategori *</label>
+            <select 
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>
+                  {cat === 'top' ? 'Üst (Gömlek, T-shirt, vb.)' :
+                   cat === 'bottom' ? 'Alt (Pantolon, Etek, vb.)' :
+                   cat === 'shoes' ? 'Ayakkabı' :
+                   cat === 'outerwear' ? 'Dış Giyim (Ceket, Hırka, vb.)' :
+                   cat === 'accessories' ? 'Aksesuar' : 'Diğer'}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Renk (Opsiyonel)</label>
+            <input 
+              type="text" 
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="Örn: Beyaz, Siyah, Mavi"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Stil *</label>
+            <select 
+              value={style}
+              onChange={(e) => setStyle(e.target.value)}
+              required
+            >
+              {styles.map(s => (
+                <option key={s} value={s}>
+                  {s === 'casual' ? 'Gündelik' :
+                   s === 'formal' ? 'Resmi' :
+                   s === 'sporty' ? 'Spor' :
+                   s === 'elegant' ? 'Şık' :
+                   s === 'bohemian' ? 'Bohem' :
+                   s === 'minimalist' ? 'Minimalist' : s}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-actions">
+            <button type="button" onClick={() => navigate('/')} className="cancel-btn">
+              İptal
+            </button>
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? 'Yükleniyor...' : 'Ekle ve Kombinasyonları Gör'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
