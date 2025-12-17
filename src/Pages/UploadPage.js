@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UploadPage.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const UploadPage = () => {
   const [image, setImage] = useState(null);
@@ -11,6 +11,14 @@ const UploadPage = () => {
   const [style, setStyle] = useState('casual');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && ['top', 'bottom', 'shoes', 'outerwear', 'accessories', 'other'].includes(categoryParam)) {
+      setCategory(categoryParam);
+    }
+  }, [searchParams]);
 
   const categories = ['top', 'bottom', 'shoes', 'outerwear', 'accessories', 'other'];
   const styles = ['casual', 'formal', 'sporty', 'elegant', 'bohemian', 'minimalist'];
@@ -73,7 +81,7 @@ const UploadPage = () => {
     <div className="upload-page">
       <div className="upload-container">
         <h2>Kıyafetini Yükle</h2>
-        <p className="upload-description">Gardrobuna kıyafet ekle, kombinasyon önerilerini gör</p>
+        <p className="upload-description">Gardırobuna kıyafet ekle, kombin önerilerini gör</p>
         
         <form onSubmit={handleSubmit} className="upload-form">
           <div className="form-group">
@@ -155,7 +163,7 @@ const UploadPage = () => {
               İptal
             </button>
             <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? 'Yükleniyor...' : 'Ekle ve Kombinasyonları Gör'}
+              {loading ? 'Yükleniyor...' : 'Ekle ve Kombinleri Gör'}
             </button>
           </div>
         </form>

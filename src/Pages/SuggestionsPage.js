@@ -34,7 +34,7 @@ const SuggestionsPage = () => {
   if (loading) {
     return (
       <div className="suggestions-page">
-        <div className="loading">Kombinasyonlar oluşturuluyor...</div>
+        <div className="loading">Kombinler oluşturuluyor...</div>
       </div>
     );
   }
@@ -42,13 +42,13 @@ const SuggestionsPage = () => {
   return (
     <div className="suggestions-page">
       <div className="suggestions-header">
-        <h1>Kombinasyon Önerileri</h1>
+        <h1>Kombin Önerileri</h1>
         <button onClick={() => navigate('/')} className="back-btn">Ana Sayfaya Dön</button>
       </div>
 
       {combinations.length === 0 ? (
         <div className="no-suggestions">
-          <p>Henüz yeterli kıyafet eklenmemiş. Önce gardrobuna kıyafet ekleyin!</p>
+          <p>Henüz yeterli kıyafet eklenmemiş. Önce gardırobuna kıyafet ekleyin!</p>
           <button onClick={() => navigate('/upload')}>Kıyafet Ekle</button>
         </div>
       ) : (
@@ -69,7 +69,6 @@ const SuggestionsPage = () => {
                         />
                       )}
                       <p className="item-name">{item.name || 'Untitled'}</p>
-                      <p className="item-category">{item.category}</p>
                     </div>
                   )
                 ))}
@@ -82,7 +81,7 @@ const SuggestionsPage = () => {
                     <div key={missingIndex} className="missing-item">
                       <div className="missing-item-info">
                         <p className="missing-item-name">{missing.itemName || missing.category}</p>
-                        <p className="missing-item-desc">{missing.description || `${missing.category} bu kombinasyonu tamamlar`}</p>
+                        <p className="missing-item-desc">{missing.description || `${missing.category} bu kombini tamamlar`}</p>
                       </div>
                       {missing.purchaseLink && (
                         <button 

@@ -150,6 +150,24 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.add-item-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.add-item-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
 .combinations-sidebar {
   background: white;
   padding: 30px 20px;
@@ -158,6 +176,12 @@
   height: fit-content;
   position: sticky;
   top: 20px;
+  transition: all 0.3s;
+}
+
+.combinations-sidebar:hover {
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+  transform: translateY(-2px);
 }
 
 .combinations-sidebar h2 {

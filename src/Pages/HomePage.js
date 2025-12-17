@@ -16,12 +16,12 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const sidebarCategories = [
-    { id: 'all', label: 'Tümü', icon: '👔' },
-    { id: 'top', label: 'Kıyafetlerim', icon: '👕', keywords: ['top', 'shirt', 't-shirt', 'blouse', 'sweater', 'tshirt'] },
-    { id: 'bottom', label: 'Alt Giyim', icon: '👖', keywords: ['bottom', 'pants', 'jeans', 'skirt', 'shorts', 'pantolon'] },
-    { id: 'shoes', label: 'Ayakkabılarım', icon: '👠', keywords: ['shoes', 'sneakers', 'boots', 'heels', 'shoe', 'ayakkabi'] },
-    { id: 'outerwear', label: 'Dış Giyim', icon: '🧥', keywords: ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear', 'hırka', 'ceket'] },
-    { id: 'accessories', label: 'Takılarım & Aksesuarlarım', icon: '💍', keywords: ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf', 'aksesuar', 'canta', 'kemer', 'sapka', 'atki'] }
+    { id: 'all', label: 'Tümü', icon: '👔', category: null },
+    { id: 'top', label: 'Kıyafetlerim', icon: '👕', keywords: ['top', 'shirt', 't-shirt', 'blouse', 'sweater', 'tshirt'], category: 'top' },
+    { id: 'bottom', label: 'Alt Giyim', icon: '👖', keywords: ['bottom', 'pants', 'jeans', 'skirt', 'shorts', 'pantolon'], category: 'bottom' },
+    { id: 'shoes', label: 'Ayakkabılarım', icon: '👠', keywords: ['shoes', 'sneakers', 'boots', 'heels', 'shoe', 'ayakkabi'], category: 'shoes' },
+    { id: 'outerwear', label: 'Dış Giyim', icon: '🧥', keywords: ['jacket', 'coat', 'blazer', 'cardigan', 'outerwear', 'hırka', 'ceket'], category: 'outerwear' },
+    { id: 'accessories', label: 'Takılarım & Aksesuarlarım', icon: '💍', keywords: ['accessory', 'accessories', 'bag', 'belt', 'hat', 'scarf', 'aksesuar', 'canta', 'kemer', 'sapka', 'atki'], category: 'accessories' }
   ];
 
   useEffect(() => {
@@ -153,14 +153,14 @@ const HomePage = () => {
     <div className="homepage">
       <div className="hero-section">
         <h1>Fashion Match</h1>
-        <p className="hero-subtitle">Gardrobunu yönet, eksiklerini fark et, harika kombinasyonlar oluştur!</p>
+        <p className="hero-subtitle">Gardırobunu yönet, eksiklerini fark et, harika kombinler oluştur!</p>
         <div className="hero-actions">
           <button className="primary-btn" onClick={() => navigate('/upload')}>
             Kıyafet Ekle
           </button>
           {wardrobe.length > 0 && (
             <button className="secondary-btn" onClick={() => navigate('/suggestions')}>
-              Tüm Kombinasyonlar
+              Tüm Kombinler
             </button>
           )}
         </div>
@@ -170,34 +170,67 @@ const HomePage = () => {
         <div className="categories-sidebar">
           <h3>Kategoriler</h3>
           <ul className="category-list">
-            {sidebarCategories.map(category => (
+            {sidebarCategories.map(cat => (
               <li 
-                key={category.id}
-                className={`category-item ${activeSidebarCategory === category.id ? 'active' : ''}`}
-                onClick={() => setActiveSidebarCategory(category.id)}
+                key={cat.id}
+                className={`category-item ${activeSidebarCategory === cat.id ? 'active' : ''}`}
+                onClick={() => setActiveSidebarCategory(cat.id)}
               >
-                <span className="category-icon">{category.icon}</span>
-                <span className="category-label">{category.label}</span>
-                <span className="category-count">({getCategoryCount(category.id)})</span>
+                <span className="category-icon">{cat.icon}</span>
+                <span className="category-label">{cat.label}</span>
+                <span className="category-count">({getCategoryCount(cat.id)})</span>
               </li>
             ))}
           </ul>
         </div>
 
         <div className="wardrobe-section">
-          <h2>
-            {activeSidebarCategory === 'all' 
-              ? `Gardrobum (${wardrobe.length})`
-              : `${sidebarCategories.find(c => c.id === activeSidebarCategory)?.label} (${getCategoryCount(activeSidebarCategory)})`
-            }
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h2 style={{ margin: 0 }}>
+              {activeSidebarCategory === 'all' 
+                ? `Gardırobum (${wardrobe.length})`
+                : `${sidebarCategories.find(c => c.id === activeSidebarCategory)?.label} (${getCategoryCount(activeSidebarCategory)})`
+              }
+            </h2>
+            {activeSidebarCategory !== 'all' && (() => {
+                const selectedCategory = sidebarCategories.find(c => c.id === activeSidebarCategory);
+                const buttonText = selectedCategory?.label === 'Kıyafetlerim' ? 'Kıyafet Ekle' :
+                                  selectedCategory?.label === 'Ayakkabılarım' ? 'Ayakkabı Ekle' :
+                                  selectedCategory?.label === 'Takılarım & Aksesuarlarım' ? 'Aksesuar Ekle' :
+                                  selectedCategory?.label === 'Alt Giyim' ? 'Alt Giyim Ekle' :
+                                  selectedCategory?.label === 'Dış Giyim' ? 'Dış Giyim Ekle' :
+                                  'Ürün Ekle';
+                return (
+                  <button 
+                    className="add-item-btn"
+                    onClick={() => {
+                      if (selectedCategory && selectedCategory.category) {
+                        navigate(`/upload?category=${selectedCategory.category}`);
+                      } else {
+                        navigate('/upload');
+                      }
+                    }}
+                  >
+                    + {buttonText}
+                  </button>
+                );
+              })()}
+          </div>
 
           {wardrobe.length > 0 && (
             <div className="filters-section">
               <div className="search-box">
                 <input
                   type="text"
-                  placeholder="Kıyafet ara..."
+                  placeholder={(() => {
+                    const selectedCategory = sidebarCategories.find(c => c.id === activeSidebarCategory);
+                    if (selectedCategory?.label === 'Kıyafetlerim') return 'Kıyafet ara...';
+                    if (selectedCategory?.label === 'Ayakkabılarım') return 'Ayakkabı ara...';
+                    if (selectedCategory?.label === 'Takılarım & Aksesuarlarım') return 'Aksesuar ara...';
+                    if (selectedCategory?.label === 'Alt Giyim') return 'Alt giyim ara...';
+                    if (selectedCategory?.label === 'Dış Giyim') return 'Dış giyim ara...';
+                    return 'Kıyafet ara...';
+                  })()}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
@@ -266,7 +299,7 @@ const HomePage = () => {
             <div className="loading">Yükleniyor...</div>
           ) : wardrobe.length === 0 ? (
             <div className="empty-wardrobe">
-              <p>Henüz gardrobuna kıyafet eklenmemiş.</p>
+              <p>Henüz gardırobuna kıyafet eklenmemiş.</p>
               <p>İlk kıyafetinizi ekleyerek başlayın!</p>
               <button onClick={() => navigate('/upload')}>Kıyafet Ekle</button>
             </div>
@@ -312,20 +345,18 @@ const HomePage = () => {
         </div>
 
         {wardrobe.length >= 2 && (
-          <div className="combinations-sidebar">
-            <h2>Kombinasyon Önerileri</h2>
+          <div className="combinations-sidebar" onClick={() => navigate('/suggestions')} style={{ cursor: 'pointer' }}>
+            <h2>Kombin Önerileri</h2>
             {loadingCombinations ? (
-              <div className="loading">Kombinasyonlar oluşturuluyor...</div>
+              <div className="loading">Kombinler oluşturuluyor...</div>
             ) : combinations.length === 0 ? (
-              <p>Henüz kombinasyon oluşturulmadı.</p>
+              <p>Henüz kombin oluşturulmadı.</p>
             ) : (
               <div className="combinations-list">
                 {combinations.slice(0, 5).map((combination, index) => (
                   <div 
                     key={index} 
                     className="combination-preview"
-                    onClick={() => navigate('/suggestions')}
-                    style={{ cursor: 'pointer' }}
                   >
                     <h4>{combination.name}</h4>
                     <div className="combination-items-preview">
@@ -341,7 +372,7 @@ const HomePage = () => {
                       ))}
                     </div>
                     {combination.missingItems && combination.missingItems.length > 0 && (
-                      <div className="missing-items-preview" onClick={(e) => e.stopPropagation()}>
+                      <div className="missing-items-preview">
                         <p className="missing-hint">Eksik: {combination.missingItems[0].itemName}</p>
                         {combination.missingItems[0].purchaseLink && (
                           <button
@@ -365,7 +396,7 @@ const HomePage = () => {
                 className="view-all-btn"
                 onClick={() => navigate('/suggestions')}
               >
-                Tüm Kombinasyonları Gör ({combinations.length})
+                Tüm Kombinleri Gör ({combinations.length})
               </button>
             )}
           </div>
