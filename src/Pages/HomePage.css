@@ -65,12 +65,126 @@
   transform: translateY(-3px);
 }
 
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .wardrobe-section {
   background: white;
   padding: 50px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
   border-radius: 30px 30px 0 0;
+}
+
+.combinations-sidebar {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.combinations-sidebar h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.combinations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.combination-preview {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+}
+
+.combination-preview h4 {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.combination-items-preview {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.preview-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+}
+
+.missing-items-preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #fff3cd;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.missing-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #856404;
+  font-weight: 500;
+}
+
+.purchase-link-btn {
+  padding: 6px 12px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.purchase-link-btn:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.view-all-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.view-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .wardrobe-section h2 {
@@ -272,6 +386,17 @@
   transform: scale(1.1);
 }
 
+@media (max-width: 1024px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .combinations-sidebar {
+    position: relative;
+    top: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section h1 {
     font-size: 2.5rem;
@@ -288,5 +413,9 @@
 
   .wardrobe-item .item-image {
     height: 180px;
+  }
+
+  .main-content {
+    padding: 0 10px;
   }
 }

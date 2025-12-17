@@ -13,7 +13,7 @@ const SuggestionsPage = () => {
 
   const generateSuggestions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/suggestions/generate');
+      const response = await fetch('http://localhost:5001/api/suggestions/generate');
       const data = await response.json();
       setCombinations(data.combinations || []);
       setLoading(false);
@@ -61,7 +61,7 @@ const SuggestionsPage = () => {
                     <div key={itemIndex} className="item-preview">
                       {item.image_url && (
                         <img 
-                          src={`http://localhost:5000${item.image_url}`} 
+                          src={`http://localhost:5001${item.image_url}`} 
                           alt={item.name || 'Item'} 
                           className="item-image"
                         />
