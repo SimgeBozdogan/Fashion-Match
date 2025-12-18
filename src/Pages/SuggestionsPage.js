@@ -5,7 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const SuggestionsPage = () => {
   const [combinations, setCombinations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState({
+    temperature: 20,
+    condition: 'sunny',
+    recommendation: 'normal'
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
