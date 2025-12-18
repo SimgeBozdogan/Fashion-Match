@@ -587,8 +587,13 @@ app.get('/api/weather', async (req, res) => {
           else if (code >= 800) condition = code === 800 ? 'sunny' : 'cloudy';
 
           let recommendation = 'normal';
-          if (temp < 10) recommendation = 'cold';
-          else if (temp > 25) recommendation = 'hot';
+          if (condition === 'rainy') {
+            recommendation = 'rainy';
+          } else if (temp < 10) {
+            recommendation = 'cold';
+          } else if (temp > 25) {
+            recommendation = 'hot';
+          }
 
           res.json({
             temperature: temp,
@@ -640,7 +645,9 @@ function getFallbackWeather(res) {
   }
   
   let recommendation = 'normal';
-  if (temperature < 10) {
+  if (condition === 'rainy') {
+    recommendation = 'rainy';
+  } else if (temperature < 10) {
     recommendation = 'cold';
   } else if (temperature > 25) {
     recommendation = 'hot';

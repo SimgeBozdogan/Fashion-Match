@@ -143,6 +143,7 @@ const DashboardPage = () => {
             <div className="weather-recommendation">
               {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
               {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
+              {weather.recommendation === 'rainy' && 'Yağmurluk veya şemsiye almanızı öneririz'}
               {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
             </div>
           </div>
