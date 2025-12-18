@@ -18,43 +18,62 @@
 
 .hero-subtitle {
   font-size: 1.3rem;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   opacity: 0.95;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.weather-widget {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+.weather-banner {
+  max-width: 1600px;
+  margin: 0 auto 30px auto;
+  padding: 0 20px;
+}
+
+.weather-content {
+  background: white;
   padding: 20px 30px;
   border-radius: 15px;
-  margin-bottom: 30px;
-  display: inline-block;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
 }
 
-.weather-temp-small {
-  font-size: 2rem;
+.weather-icon-large {
+  font-size: 3rem;
+}
+
+.weather-text {
+  flex: 1;
+  min-width: 150px;
+}
+
+.weather-temp-main {
+  font-size: 2.5rem;
   font-weight: 700;
-  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
   margin-bottom: 5px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
-.weather-condition-small {
+.weather-desc {
   font-size: 1.1rem;
-  color: white;
-  margin-bottom: 5px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  color: #666;
+  font-weight: 500;
 }
 
-.weather-recommendation-small {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.9);
-  font-style: italic;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+.weather-recommendation-main {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  padding-left: 20px;
+  border-left: 2px solid #e0e0e0;
 }
 
 .hero-actions {

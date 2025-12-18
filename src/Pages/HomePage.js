@@ -166,22 +166,6 @@ const HomePage = () => {
       <div className="hero-section">
         <h1>Fashion Match</h1>
         <p className="hero-subtitle">Gardırobunu yönet, eksiklerini fark et, harika kombinler oluştur!</p>
-        {weather && (
-          <div className="weather-widget">
-            <div className="weather-temp-small">{weather.temperature}°C</div>
-            <div className="weather-condition-small">
-              {weather.condition === 'sunny' && '☀️ Güneşli'}
-              {weather.condition === 'cloudy' && '☁️ Bulutlu'}
-              {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
-              {weather.condition === 'cold' && '❄️ Soğuk'}
-            </div>
-            <div className="weather-recommendation-small">
-              {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
-              {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
-              {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
-            </div>
-          </div>
-        )}
         <div className="hero-actions">
           <button className="primary-btn" onClick={() => navigate('/upload')}>
             Kıyafet Ekle
@@ -198,6 +182,33 @@ const HomePage = () => {
           )}
         </div>
       </div>
+
+      {weather && (
+        <div className="weather-banner">
+          <div className="weather-content">
+            <div className="weather-icon-large">
+              {weather.condition === 'sunny' && '☀️'}
+              {weather.condition === 'cloudy' && '☁️'}
+              {weather.condition === 'rainy' && '🌧️'}
+              {weather.condition === 'cold' && '❄️'}
+            </div>
+            <div className="weather-text">
+              <div className="weather-temp-main">{weather.temperature}°C</div>
+              <div className="weather-desc">
+                {weather.condition === 'sunny' && 'Güneşli'}
+                {weather.condition === 'cloudy' && 'Bulutlu'}
+                {weather.condition === 'rainy' && 'Yağmurlu'}
+                {weather.condition === 'cold' && 'Soğuk'}
+              </div>
+            </div>
+            <div className="weather-recommendation-main">
+              {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
+              {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
+              {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="main-content">
         <div className="categories-sidebar">

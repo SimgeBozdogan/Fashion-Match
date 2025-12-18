@@ -553,7 +553,74 @@ function getItemSeason(category, style) {
 }
 
 
-app.get('/api/weather', (req, res) => {
+app.get('/api/weather', async (req, res) => {
+  try {
+    const https = require('https');
+    const http = require('http');
+    
+    const options = {
+      hostname: 'wttr.in',
+      path: '/Istanbul?format=j1',
+      method: 'GET',
+      timeout: 5000
+    };
+
+    const request = https.request(options, (response) => {
+      let data = '';
+
+      response.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      response.on('end', () => {
+        try {
+          const weatherData = JSON.parse(data);
+          const current = weatherData.current_condition[0];
+          const temp = parseInt(current.temp_C);
+          const code = parseInt(current.weatherCode);
+
+          let condition = 'sunny';
+          if (code >= 200 && code < 300) condition = 'rainy';
+          else if (code >= 300 && code < 600) condition = 'rainy';
+          else if (code >= 600 && code < 700) condition = 'cold';
+          else if (code >= 700 && code < 800) condition = 'cloudy';
+          else if (code >= 800) condition = code === 800 ? 'sunny' : 'cloudy';
+
+          let recommendation = 'normal';
+          if (temp < 10) recommendation = 'cold';
+          else if (temp > 25) recommendation = 'hot';
+
+          res.json({
+            temperature: temp,
+            condition: condition,
+            recommendation: recommendation,
+            city: 'Istanbul'
+          });
+        } catch (parseError) {
+          console.error('Error parsing weather data:', parseError);
+          return getFallbackWeather(res);
+        }
+      });
+    });
+
+    request.on('error', (error) => {
+      console.error('Weather API error:', error);
+      return getFallbackWeather(res);
+    });
+
+    request.on('timeout', () => {
+      request.destroy();
+      return getFallbackWeather(res);
+    });
+
+    request.end();
+  } catch (error) {
+    console.error('Weather request error:', error);
+    return getFallbackWeather(res);
+  }
+});
+
+function getFallbackWeather(res) {
   const month = new Date().getMonth() + 1;
   let temperature = 20;
   let condition = 'sunny';
@@ -584,7 +651,7 @@ app.get('/api/weather', (req, res) => {
     condition: condition,
     recommendation: recommendation
   });
-});
+}
 
 app.post('/api/suggestions/smart', (req, res) => {
   const { occasion, weather } = req.body;
