@@ -95,10 +95,14 @@ app.post('/api/wardrobe/upload', upload.single('image'), (req, res) => {
     const { name, category, color, style, purchase_price, purchase_date } = req.body;
     const imageUrl = `/uploads/${req.file.filename}`;
 
+    if (!purchase_price || parseFloat(purchase_price) <= 0) {
+      return res.status(400).json({ error: 'Satın alma fiyatı gereklidir ve 0\'dan büyük olmalıdır' });
+    }
+
     db.run(
       `INSERT INTO wardrobe_items (name, category, color, style, image_url, purchase_price, purchase_date) 
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [name || 'Untitled Item', category || 'other', color || 'unknown', style || 'casual', imageUrl, purchase_price || null, purchase_date || null],
+      [name || 'Untitled Item', category || 'other', color || 'unknown', style || 'casual', imageUrl, purchase_price, purchase_date || null],
       function(err) {
         if (err) {
           console.error('Database error:', err);
@@ -516,15 +520,9 @@ app.get('/api/statistics', (req, res) => {
       return itemSeason === season;
     });
 
-    const itemsWithPrice = items.filter(item => item.purchase_price).length;
-    const itemsWithEstimatedPrice = totalItems - itemsWithPrice;
-
     res.json({
       totalItems,
       totalValue: Math.round(totalValue * 100) / 100,
-      estimatedValue: itemsWithEstimatedPrice > 0,
-      itemsWithPrice,
-      itemsWithEstimatedPrice,
       topColors,
       topStyles,
       categoryCount,

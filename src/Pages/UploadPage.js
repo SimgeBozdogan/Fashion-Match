@@ -49,7 +49,7 @@ const UploadPage = () => {
     formData.append('category', category);
     formData.append('color', color || 'unknown');
     formData.append('style', style);
-    if (purchasePrice) formData.append('purchase_price', purchasePrice);
+    formData.append('purchase_price', purchasePrice);
     if (purchaseDate) formData.append('purchase_date', purchaseDate);
 
     try {
