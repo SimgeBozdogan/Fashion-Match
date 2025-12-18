@@ -4,11 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const DashboardPage = () => {
   const [statistics, setStatistics] = useState(null);
-  const [weather, setWeather] = useState({
-    temperature: 0,
-    condition: 'sunny',
-    recommendation: 'normal'
-  });
+  const [weather, setWeather] = useState(null);
   const [smartCombinations, setSmartCombinations] = useState([]);
   const [unwornCombinations, setUnwornCombinations] = useState([]);
   const [colorHarmony, setColorHarmony] = useState(null);
@@ -22,7 +18,7 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    if (weather && weather.temperature > 0) {
+    if (weather) {
       loadSmartCombinations();
     }
   }, [selectedOccasion, weather]);
@@ -133,24 +129,26 @@ const DashboardPage = () => {
         </div>
       )}
 
-      <div className="weather-section">
-        <h2>Hava Durumu</h2>
-        <div className="weather-card">
-          <div className="weather-temp">{weather.temperature || 0}°C</div>
-          <div className="weather-condition">
-            {weather.condition === 'sunny' && '☀️ Güneşli'}
-            {weather.condition === 'cloudy' && '☁️ Bulutlu'}
-            {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
-            {weather.condition === 'cold' && '❄️ Soğuk'}
-          </div>
-          <div className="weather-recommendation">
-            {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
-            {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
-            {weather.recommendation === 'rainy' && 'Yağmurluk veya şemsiye almanızı öneririz'}
-            {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
+      {weather && (
+        <div className="weather-section">
+          <h2>Hava Durumu</h2>
+          <div className="weather-card">
+            <div className="weather-temp">{weather.temperature}°C</div>
+            <div className="weather-condition">
+              {weather.condition === 'sunny' && '☀️ Güneşli'}
+              {weather.condition === 'cloudy' && '☁️ Bulutlu'}
+              {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
+              {weather.condition === 'cold' && '❄️ Soğuk'}
+            </div>
+            <div className="weather-recommendation">
+              {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
+              {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
+              {weather.recommendation === 'rainy' && 'Yağmurluk veya şemsiye almanızı öneririz'}
+              {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {statistics && statistics.topColors && (
         <div className="analytics-section">
