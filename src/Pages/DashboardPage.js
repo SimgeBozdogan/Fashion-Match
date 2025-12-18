@@ -113,11 +113,6 @@ const DashboardPage = () => {
           <div className="stat-card">
             <h3>Gardırop Değeri</h3>
             <div className="stat-value">{statistics.totalValue.toFixed(2)} ₺</div>
-            {statistics.estimatedValue && (
-              <p className="stat-hint">
-                {statistics.itemsWithEstimatedPrice} ürün için tahmini değer kullanıldı
-              </p>
-            )}
           </div>
 
           <div className="stat-card">

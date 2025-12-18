@@ -474,15 +474,9 @@ app.get('/api/statistics', (req, res) => {
     const thirtyDaysAgo = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     items.forEach(item => {
-      let itemPrice = 0;
-      
       if (item.purchase_price) {
-        itemPrice = parseFloat(item.purchase_price);
-      } else {
-        itemPrice = getEstimatedPrice(item.category, item.style);
+        totalValue += parseFloat(item.purchase_price);
       }
-      
-      totalValue += itemPrice;
 
       if (item.color && item.color !== 'unknown') {
         colorCount[item.color] = (colorCount[item.color] || 0) + 1;
@@ -560,19 +554,6 @@ function getItemSeason(category, style) {
   return 'all';
 }
 
-function getEstimatedPrice(category, style) {
-  const priceMap = {
-    'top': { casual: 150, formal: 300, sporty: 200, elegant: 400, bohemian: 250, minimalist: 200, default: 200 },
-    'bottom': { casual: 200, formal: 400, sporty: 250, elegant: 500, bohemian: 300, minimalist: 300, default: 300 },
-    'shoes': { casual: 300, formal: 500, sporty: 400, elegant: 600, bohemian: 350, minimalist: 350, default: 400 },
-    'outerwear': { casual: 400, formal: 800, sporty: 500, elegant: 1000, bohemian: 600, minimalist: 500, default: 600 },
-    'accessories': { casual: 100, formal: 200, sporty: 150, elegant: 300, bohemian: 150, minimalist: 120, default: 150 },
-    'other': { default: 200 }
-  };
-
-  const categoryPrices = priceMap[category?.toLowerCase()] || priceMap['other'];
-  return categoryPrices[style?.toLowerCase()] || categoryPrices.default || 200;
-}
 
 app.get('/api/weather', (req, res) => {
   const month = new Date().getMonth() + 1;

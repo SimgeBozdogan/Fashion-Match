@@ -163,7 +163,7 @@ const UploadPage = () => {
           </div>
 
           <div className="form-group">
-            <label>Satın Alma Fiyatı (₺) - Opsiyonel</label>
+            <label>Satın Alma Fiyatı (₺) *</label>
             <input 
               type="number" 
               value={purchasePrice}
@@ -171,6 +171,7 @@ const UploadPage = () => {
               placeholder="Örn: 299.99"
               min="0"
               step="0.01"
+              required
             />
           </div>
 
