@@ -673,18 +673,26 @@ app.post('/api/suggestions/smart', (req, res) => {
     }
 
     let filteredItems = [...items];
+    let weatherFiltered = false;
 
     if (weather === 'cold') {
-      filteredItems = filteredItems.filter(item => 
+      const coldFiltered = items.filter(item => 
         item.category === 'outerwear' || 
         item.style === 'formal' || 
         ['jacket', 'coat', 'sweater'].includes(item.category?.toLowerCase())
       );
+      if (coldFiltered.length >= 2) {
+        filteredItems = coldFiltered;
+        weatherFiltered = true;
+      }
     } else if (weather === 'hot') {
-      filteredItems = filteredItems.filter(item => 
+      const hotFiltered = items.filter(item => 
         !['outerwear', 'jacket', 'coat'].includes(item.category?.toLowerCase())
       );
-    } else if (weather === 'rainy') {
+      if (hotFiltered.length >= 2) {
+        filteredItems = hotFiltered;
+        weatherFiltered = true;
+      }
     }
 
     const occasionStyles = {
@@ -698,9 +706,16 @@ app.post('/api/suggestions/smart', (req, res) => {
     const preferredStyles = occasionStyles[occasion] || ['casual'];
 
     if (occasion && occasion !== 'daily') {
-      filteredItems = filteredItems.filter(item => 
+      const occasionFiltered = filteredItems.filter(item => 
         preferredStyles.includes(item.style)
       );
+      if (occasionFiltered.length >= 2 || (!weatherFiltered && occasionFiltered.length > 0)) {
+        filteredItems = occasionFiltered.length >= 2 ? occasionFiltered : filteredItems;
+      }
+    }
+
+    if (filteredItems.length < 2) {
+      filteredItems = items;
     }
 
     const combinations = generateSmartCombinations(filteredItems, occasion, weather);
