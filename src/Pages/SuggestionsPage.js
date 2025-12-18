@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const SuggestionsPage = () => {
   const [combinations, setCombinations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [weather, setWeather] = useState(null);
-  const [weatherLoading, setWeatherLoading] = useState(true);
+  const [weather, setWeather] = useState({
+    temperature: 0,
+    condition: 'sunny',
+    recommendation: 'normal'
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,11 +21,10 @@ const SuggestionsPage = () => {
     try {
       const response = await fetch('http://localhost:5001/api/weather');
       const data = await response.json();
+      await new Promise(resolve => setTimeout(resolve, 100));
       setWeather(data);
-      setWeatherLoading(false);
     } catch (error) {
       console.error('Error loading weather:', error);
-      setWeatherLoading(false);
     }
   };
 
@@ -61,29 +63,27 @@ const SuggestionsPage = () => {
         <button onClick={() => navigate('/')} className="back-btn">Ana Sayfaya Dön</button>
       </div>
 
-      {!weatherLoading && weather && (
-        <div className="weather-banner-bar">
-          <div className="weather-icon-bar">
-            {weather.condition === 'sunny' && '☀️'}
-            {weather.condition === 'cloudy' && '☁️'}
-            {weather.condition === 'rainy' && '🌧️'}
-            {weather.condition === 'cold' && '❄️'}
-          </div>
-          <div className="weather-temp-bar">{weather.temperature}°C</div>
-          <div className="weather-desc-bar">
-            {weather.condition === 'sunny' && 'Güneşli'}
-            {weather.condition === 'cloudy' && 'Bulutlu'}
-            {weather.condition === 'rainy' && 'Yağmurlu'}
-            {weather.condition === 'cold' && 'Soğuk'}
-          </div>
-          <div className="weather-recommendation-bar">
-            {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
-            {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
-            {weather.recommendation === 'rainy' && '☔ Yağmurluk veya şemsiye almanızı öneririz'}
-            {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
-          </div>
+      <div className="weather-banner-bar">
+        <div className="weather-icon-bar">
+          {weather.condition === 'sunny' && '☀️'}
+          {weather.condition === 'cloudy' && '☁️'}
+          {weather.condition === 'rainy' && '🌧️'}
+          {weather.condition === 'cold' && '❄️'}
         </div>
-      )}
+        <div className="weather-temp-bar">{weather.temperature || 0}°C</div>
+        <div className="weather-desc-bar">
+          {weather.condition === 'sunny' && 'Güneşli'}
+          {weather.condition === 'cloudy' && 'Bulutlu'}
+          {weather.condition === 'rainy' && 'Yağmurlu'}
+          {weather.condition === 'cold' && 'Soğuk'}
+        </div>
+        <div className="weather-recommendation-bar">
+          {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
+          {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
+          {weather.recommendation === 'rainy' && '☔ Yağmurluk veya şemsiye almanızı öneririz'}
+          {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
+        </div>
+      </div>
 
       {combinations.length === 0 ? (
         <div className="no-suggestions">
