@@ -158,16 +158,12 @@ const HomePage = () => {
           <button className="primary-btn" onClick={() => navigate('/upload')}>
             Kıyafet Ekle
           </button>
-          {wardrobe.length > 0 && (
-            <>
-              <button className="secondary-btn" onClick={() => navigate('/suggestions')}>
-                Tüm Kombinler
-              </button>
-              <button className="secondary-btn" onClick={() => navigate('/dashboard')}>
-                Analiz & İstatistikler
-              </button>
-            </>
-          )}
+          <button className="secondary-btn" onClick={() => navigate('/suggestions')}>
+            Tüm Kombinler
+          </button>
+          <button className="secondary-btn" onClick={() => navigate('/dashboard')}>
+            Analiz & İstatistikler
+          </button>
         </div>
       </div>
 
