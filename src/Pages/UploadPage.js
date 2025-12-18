@@ -9,6 +9,8 @@ const UploadPage = () => {
   const [category, setCategory] = useState('other');
   const [color, setColor] = useState('');
   const [style, setStyle] = useState('casual');
+  const [purchasePrice, setPurchasePrice] = useState('');
+  const [purchaseDate, setPurchaseDate] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -47,6 +49,8 @@ const UploadPage = () => {
     formData.append('category', category);
     formData.append('color', color || 'unknown');
     formData.append('style', style);
+    if (purchasePrice) formData.append('purchase_price', purchasePrice);
+    if (purchaseDate) formData.append('purchase_date', purchaseDate);
 
     try {
       const response = await fetch('http://localhost:5001/api/wardrobe/upload', {
@@ -156,6 +160,27 @@ const UploadPage = () => {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="form-group">
+            <label>Satın Alma Fiyatı (₺) - Opsiyonel</label>
+            <input 
+              type="number" 
+              value={purchasePrice}
+              onChange={(e) => setPurchasePrice(e.target.value)}
+              placeholder="Örn: 299.99"
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Satın Alma Tarihi - Opsiyonel</label>
+            <input 
+              type="date" 
+              value={purchaseDate}
+              onChange={(e) => setPurchaseDate(e.target.value)}
+            />
           </div>
 
           <div className="form-actions">

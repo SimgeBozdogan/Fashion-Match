@@ -549,19 +549,36 @@ function getItemSeason(category, style) {
 }
 
 app.get('/api/weather', (req, res) => {
-  const mockWeather = {
-    temperature: Math.floor(Math.random() * 25) + 5,
-    condition: ['sunny', 'cloudy', 'rainy', 'cold'][Math.floor(Math.random() * 4)],
-    recommendation: 'normal'
-  };
-
-  if (mockWeather.temperature < 10) {
-    mockWeather.recommendation = 'cold';
-  } else if (mockWeather.temperature > 25) {
-    mockWeather.recommendation = 'hot';
+  const month = new Date().getMonth() + 1;
+  let temperature = 20;
+  let condition = 'sunny';
+  
+  if (month >= 12 || month <= 2) {
+    temperature = Math.floor(Math.random() * 8) + 3;
+    const conditions = ['sunny', 'cloudy', 'cold'];
+    condition = conditions[Math.floor(Math.random() * conditions.length)];
+  } else if (month >= 6 && month <= 8) {
+    temperature = Math.floor(Math.random() * 12) + 25;
+    const conditions = ['sunny', 'cloudy'];
+    condition = conditions[Math.floor(Math.random() * conditions.length)];
+  } else {
+    temperature = Math.floor(Math.random() * 12) + 15;
+    const conditions = ['sunny', 'cloudy', 'rainy'];
+    condition = conditions[Math.floor(Math.random() * conditions.length)];
   }
-
-  res.json(mockWeather);
+  
+  let recommendation = 'normal';
+  if (temperature < 10) {
+    recommendation = 'cold';
+  } else if (temperature > 25) {
+    recommendation = 'hot';
+  }
+  
+  res.json({
+    temperature: temperature,
+    condition: condition,
+    recommendation: recommendation
+  });
 });
 
 app.post('/api/suggestions/smart', (req, res) => {
