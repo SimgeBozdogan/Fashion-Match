@@ -100,7 +100,7 @@ const DashboardPage = () => {
     <div className="dashboard-page">
       <div className="dashboard-header">
         <h1>Gardırop Analizi</h1>
-        <button onClick={() => navigate('/')} className="back-btn">Ana Sayfa</button>
+        <button onClick={() => navigate('/')} className="back-btn">Ana Sayfaya Dön</button>
       </div>
 
       {statistics && (
