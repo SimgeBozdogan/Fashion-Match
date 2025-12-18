@@ -18,11 +18,43 @@
 
 .hero-subtitle {
   font-size: 1.3rem;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   opacity: 0.95;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.weather-widget {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 20px 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.weather-temp-small {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.weather-condition-small {
+  font-size: 1.1rem;
+  color: white;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.weather-recommendation-small {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.9);
+  font-style: italic;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
 .hero-actions {

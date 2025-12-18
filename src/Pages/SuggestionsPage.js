@@ -5,11 +5,23 @@ import { useNavigate } from 'react-router-dom';
 const SuggestionsPage = () => {
   const [combinations, setCombinations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [weather, setWeather] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     generateSuggestions();
+    loadWeather();
   }, []);
+
+  const loadWeather = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/weather');
+      const data = await response.json();
+      setWeather(data);
+    } catch (error) {
+      console.error('Error loading weather:', error);
+    }
+  };
 
   const generateSuggestions = async () => {
     try {

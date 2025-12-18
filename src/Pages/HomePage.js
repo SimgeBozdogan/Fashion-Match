@@ -13,6 +13,7 @@ const HomePage = () => {
   const [selectedColor, setSelectedColor] = useState('all');
   const [selectedStyle, setSelectedStyle] = useState('all');
   const [activeSidebarCategory, setActiveSidebarCategory] = useState('all');
+  const [weather, setWeather] = useState(null);
   const navigate = useNavigate();
 
   const sidebarCategories = [
@@ -26,7 +27,18 @@ const HomePage = () => {
 
   useEffect(() => {
     loadWardrobe();
+    loadWeather();
   }, []);
+
+  const loadWeather = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/weather');
+      const data = await response.json();
+      setWeather(data);
+    } catch (error) {
+      console.error('Error loading weather:', error);
+    }
+  };
 
   useEffect(() => {
     if (wardrobe.length >= 2) {
@@ -154,6 +166,22 @@ const HomePage = () => {
       <div className="hero-section">
         <h1>Fashion Match</h1>
         <p className="hero-subtitle">Gardırobunu yönet, eksiklerini fark et, harika kombinler oluştur!</p>
+        {weather && (
+          <div className="weather-widget">
+            <div className="weather-temp-small">{weather.temperature}°C</div>
+            <div className="weather-condition-small">
+              {weather.condition === 'sunny' && '☀️ Güneşli'}
+              {weather.condition === 'cloudy' && '☁️ Bulutlu'}
+              {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
+              {weather.condition === 'cold' && '❄️ Soğuk'}
+            </div>
+            <div className="weather-recommendation-small">
+              {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
+              {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
+              {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
+            </div>
+          </div>
+        )}
         <div className="hero-actions">
           <button className="primary-btn" onClick={() => navigate('/upload')}>
             Kıyafet Ekle
