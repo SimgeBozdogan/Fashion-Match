@@ -42,6 +42,10 @@ db.serialize(() => {
     color TEXT,
     style TEXT,
     image_url TEXT,
+    purchase_price REAL,
+    purchase_date TEXT,
+    last_worn DATE,
+    wear_count INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
 
@@ -70,6 +74,16 @@ db.serialize(() => {
     occasion_preference TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS combination_usage (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    combination_name TEXT,
+    items TEXT,
+    worn_date DATE,
+    occasion TEXT,
+    weather TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
 });
 
 app.post('/api/wardrobe/upload', upload.single('image'), (req, res) => {
@@ -78,13 +92,13 @@ app.post('/api/wardrobe/upload', upload.single('image'), (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const { name, category, color, style } = req.body;
+    const { name, category, color, style, purchase_price, purchase_date } = req.body;
     const imageUrl = `/uploads/${req.file.filename}`;
 
     db.run(
-      `INSERT INTO wardrobe_items (name, category, color, style, image_url) 
-       VALUES (?, ?, ?, ?, ?)`,
-      [name || 'Untitled Item', category || 'other', color || 'unknown', style || 'casual', imageUrl],
+      `INSERT INTO wardrobe_items (name, category, color, style, image_url, purchase_price, purchase_date) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [name || 'Untitled Item', category || 'other', color || 'unknown', style || 'casual', imageUrl, purchase_price || null, purchase_date || null],
       function(err) {
         if (err) {
           console.error('Database error:', err);
@@ -442,6 +456,263 @@ app.get('/api/preferences', (req, res) => {
     }
     res.json(row || {});
   });
+});
+
+app.get('/api/statistics', (req, res) => {
+  db.all('SELECT * FROM wardrobe_items', [], (err, items) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    const totalItems = items.length;
+    let totalValue = 0;
+    const colorCount = {};
+    const styleCount = {};
+    const categoryCount = {};
+    const unusedItems = [];
+    const currentDate = new Date();
+    const thirtyDaysAgo = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    items.forEach(item => {
+      if (item.purchase_price) {
+        totalValue += parseFloat(item.purchase_price);
+      }
+
+      if (item.color && item.color !== 'unknown') {
+        colorCount[item.color] = (colorCount[item.color] || 0) + 1;
+      }
+
+      if (item.style) {
+        styleCount[item.style] = (styleCount[item.style] || 0) + 1;
+      }
+
+      if (item.category) {
+        categoryCount[item.category] = (categoryCount[item.category] || 0) + 1;
+      }
+
+      if (!item.last_worn || (item.wear_count === 0 || item.wear_count === null)) {
+        unusedItems.push(item);
+      } else if (item.last_worn) {
+        const lastWornDate = new Date(item.last_worn);
+        if (lastWornDate < thirtyDaysAgo && item.wear_count < 2) {
+          unusedItems.push(item);
+        }
+      }
+    });
+
+    const topColors = Object.entries(colorCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([color, count]) => ({ color, count }));
+
+    const topStyles = Object.entries(styleCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([style, count]) => ({ style, count }));
+
+    const season = getCurrentSeason();
+    const seasonalItems = items.filter(item => {
+      const itemSeason = getItemSeason(item.category, item.style);
+      return itemSeason === season;
+    });
+
+    res.json({
+      totalItems,
+      totalValue: Math.round(totalValue * 100) / 100,
+      topColors,
+      topStyles,
+      categoryCount,
+      unusedItems: unusedItems.slice(0, 10),
+      unusedCount: unusedItems.length,
+      seasonalItems: seasonalItems.length,
+      seasonalPercentage: totalItems > 0 ? Math.round((seasonalItems.length / totalItems) * 100) : 0
+    });
+  });
+});
+
+function getCurrentSeason() {
+  const month = new Date().getMonth() + 1;
+  if (month >= 3 && month <= 5) return 'spring';
+  if (month >= 6 && month <= 8) return 'summer';
+  if (month >= 9 && month <= 11) return 'autumn';
+  return 'winter';
+}
+
+function getItemSeason(category, style) {
+  if (category === 'outerwear' || category === 'jacket' || category === 'coat') {
+    return 'winter';
+  }
+  if (style === 'sporty' || category === 'shoes') {
+    return 'summer';
+  }
+  return 'all';
+}
+
+app.get('/api/weather', (req, res) => {
+  const mockWeather = {
+    temperature: Math.floor(Math.random() * 25) + 5,
+    condition: ['sunny', 'cloudy', 'rainy', 'cold'][Math.floor(Math.random() * 4)],
+    recommendation: 'normal'
+  };
+
+  if (mockWeather.temperature < 10) {
+    mockWeather.recommendation = 'cold';
+  } else if (mockWeather.temperature > 25) {
+    mockWeather.recommendation = 'hot';
+  }
+
+  res.json(mockWeather);
+});
+
+app.post('/api/suggestions/smart', (req, res) => {
+  const { occasion, weather } = req.body;
+
+  db.all('SELECT * FROM wardrobe_items', [], (err, items) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (items.length < 2) {
+      return res.json({ combinations: [], message: 'Add at least 2 items to generate combinations' });
+    }
+
+    let filteredItems = [...items];
+
+    if (weather === 'cold') {
+      filteredItems = filteredItems.filter(item => 
+        item.category === 'outerwear' || 
+        item.style === 'formal' || 
+        ['jacket', 'coat', 'sweater'].includes(item.category?.toLowerCase())
+      );
+    } else if (weather === 'hot') {
+      filteredItems = filteredItems.filter(item => 
+        !['outerwear', 'jacket', 'coat'].includes(item.category?.toLowerCase())
+      );
+    }
+
+    const occasionStyles = {
+      'work': ['formal', 'elegant'],
+      'school': ['casual', 'minimalist'],
+      'sport': ['sporty'],
+      'evening': ['elegant', 'formal'],
+      'daily': ['casual', 'minimalist']
+    };
+
+    const preferredStyles = occasionStyles[occasion] || ['casual'];
+
+    if (occasion && occasion !== 'daily') {
+      filteredItems = filteredItems.filter(item => 
+        preferredStyles.includes(item.style)
+      );
+    }
+
+    const combinations = generateSmartCombinations(filteredItems, occasion, weather);
+    
+    db.all('SELECT * FROM combination_usage', [], (err, usageRecords) => {
+      if (err) {
+        return res.json({ combinations, unwornCombinations: [] });
+      }
+
+      const wornCombinations = new Set(
+        usageRecords.map(record => record.combination_name)
+      );
+
+      const unwornCombinations = combinations.filter(combo => 
+        !wornCombinations.has(combo.name)
+      ).slice(0, 5);
+
+      res.json({ 
+        combinations,
+        unwornCombinations,
+        colorHarmony: analyzeColorHarmony(combinations)
+      });
+    });
+  });
+});
+
+function generateSmartCombinations(items, occasion, weather) {
+  const combinations = generateCombinations(items);
+  
+  return combinations.map(combo => {
+    const harmonyScore = calculateColorHarmony(combo.items);
+    return {
+      ...combo,
+      harmonyScore,
+      occasion,
+      weatherRecommendation: weather || 'normal'
+    };
+  }).sort((a, b) => b.harmonyScore - a.harmonyScore).slice(0, 20);
+}
+
+function calculateColorHarmony(items) {
+  const colors = items.map(item => item.color).filter(Boolean);
+  if (colors.length < 2) return 5;
+
+  const colorHarmonyMap = {
+    'black': ['white', 'gray', 'red', 'blue'],
+    'white': ['black', 'blue', 'pink', 'red'],
+    'blue': ['white', 'gray', 'black', 'navy'],
+    'red': ['black', 'white', 'blue', 'gray'],
+    'gray': ['black', 'white', 'blue', 'pink'],
+    'beyaz': ['siyah', 'mavi', 'kırmızı'],
+    'siyah': ['beyaz', 'gri', 'kırmızı', 'mavi'],
+    'mavi': ['beyaz', 'gri', 'siyah']
+  };
+
+  let score = 5;
+  for (let i = 0; i < colors.length - 1; i++) {
+    const currentColor = colors[i].toLowerCase();
+    const nextColor = colors[i + 1].toLowerCase();
+    
+    if (colorHarmonyMap[currentColor]?.includes(nextColor)) {
+      score += 2;
+    } else if (currentColor === nextColor) {
+      score += 1;
+    } else {
+      score -= 1;
+    }
+  }
+
+  return Math.max(0, Math.min(10, score));
+}
+
+function analyzeColorHarmony(combinations) {
+  const harmonyAnalysis = {
+    excellent: combinations.filter(c => c.harmonyScore >= 8).length,
+    good: combinations.filter(c => c.harmonyScore >= 6 && c.harmonyScore < 8).length,
+    average: combinations.filter(c => c.harmonyScore >= 4 && c.harmonyScore < 6).length,
+    poor: combinations.filter(c => c.harmonyScore < 4).length
+  };
+
+  return harmonyAnalysis;
+}
+
+app.post('/api/combinations/mark-worn', (req, res) => {
+  const { combinationName, items, occasion, weather } = req.body;
+  const today = new Date().toISOString().split('T')[0];
+
+  db.run(
+    `INSERT INTO combination_usage (combination_name, items, worn_date, occasion, weather) 
+     VALUES (?, ?, ?, ?, ?)`,
+    [combinationName, JSON.stringify(items), today, occasion || 'daily', weather || 'normal'],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      items.forEach(itemId => {
+        db.run(
+          `UPDATE wardrobe_items 
+           SET last_worn = ?, wear_count = COALESCE(wear_count, 0) + 1 
+           WHERE id = ?`,
+          [today, itemId],
+          () => {}
+        );
+      });
+
+      res.json({ success: true, id: this.lastID });
+    }
+  );
 });
 
 app.listen(PORT, () => {

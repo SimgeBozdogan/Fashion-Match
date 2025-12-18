@@ -1,0 +1,504 @@
+.dashboard-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  margin: 0;
+}
+
+.back-btn {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.stat-card h3 {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-value.warning {
+  color: #dc3545;
+  -webkit-text-fill-color: #dc3545;
+}
+
+.stat-hint {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 10px;
+}
+
+.weather-section {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.weather-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.weather-card {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+}
+
+.weather-temp {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 10px;
+}
+
+.weather-condition {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.weather-recommendation {
+  font-size: 1rem;
+  color: #666;
+  font-style: italic;
+}
+
+.analytics-section {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.analytics-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.color-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.color-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.color-bar-label {
+  min-width: 100px;
+  font-weight: 600;
+  color: #333;
+  text-transform: capitalize;
+}
+
+.color-bar-container {
+  flex: 1;
+  height: 30px;
+  background: #f0f0f0;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.color-bar {
+  height: 100%;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  transition: width 0.3s;
+}
+
+.color-bar-value {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.style-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.style-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.style-label {
+  min-width: 120px;
+  font-weight: 600;
+  color: #333;
+}
+
+.style-bar-container {
+  flex: 1;
+  height: 25px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.style-bar {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  transition: width 0.3s;
+}
+
+.style-count {
+  min-width: 40px;
+  text-align: right;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.unused-section {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.unused-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.unused-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.unused-item-card {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.unused-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 193, 7, 0.3);
+}
+
+.unused-item-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.unused-item-info h4 {
+  font-size: 1rem;
+  color: #333;
+  margin: 10px 0 5px 0;
+}
+
+.unused-item-info p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+.last-worn {
+  color: #856404;
+  font-weight: 500;
+}
+
+.never-worn {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.smart-suggestions-section {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.section-header h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0;
+}
+
+.occasion-select {
+  padding: 10px 20px;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.harmony-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.harmony-item {
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.harmony-item.excellent {
+  background: #d4edda;
+  border: 2px solid #28a745;
+  color: #155724;
+}
+
+.harmony-item.good {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  color: #856404;
+}
+
+.harmony-item.average {
+  background: #ffe5d0;
+  border: 2px solid #fd7e14;
+  color: #a0522d;
+}
+
+.harmony-item.poor {
+  background: #f8d7da;
+  border: 2px solid #dc3545;
+  color: #721c24;
+}
+
+.harmony-item span:first-child {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.harmony-item span:last-child {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.combinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.combination-card-smart {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s;
+}
+
+.combination-card-smart:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border-color: #667eea;
+}
+
+.combination-card-smart h4 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.combination-items-smart {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.smart-item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
+
+.combination-meta {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.harmony-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.mark-worn-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.mark-worn-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.unworn-combinations {
+  margin-bottom: 40px;
+}
+
+.unworn-combinations h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.all-combinations h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px 50px;
+  font-size: 1.3rem;
+  color: white;
+  font-weight: 600;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .combinations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .harmony-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
