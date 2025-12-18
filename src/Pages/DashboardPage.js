@@ -19,10 +19,10 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    if (weather) {
+    if (weather && !weatherLoading) {
       loadSmartCombinations();
     }
-  }, [selectedOccasion, weather]);
+  }, [selectedOccasion, weather, weatherLoading]);
 
   const loadDashboardData = async () => {
     try {
