@@ -63,34 +63,24 @@ const SuggestionsPage = () => {
       </div>
 
       <div className="weather-banner-bar">
-        {weather ? (
-          <>
-            <div className="weather-icon-bar">
-              {weather.condition === 'sunny' && '☀️'}
-              {weather.condition === 'cloudy' && '☁️'}
-              {weather.condition === 'rainy' && '🌧️'}
-              {weather.condition === 'cold' && '❄️'}
-            </div>
-            <div className="weather-temp-bar">{weather.temperature}°C</div>
-            <div className="weather-desc-bar">
-              {weather.condition === 'sunny' && 'Güneşli'}
-              {weather.condition === 'cloudy' && 'Bulutlu'}
-              {weather.condition === 'rainy' && 'Yağmurlu'}
-              {weather.condition === 'cold' && 'Soğuk'}
-            </div>
-            <div className="weather-recommendation-bar">
-              {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
-              {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
-              {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="weather-icon-bar">🌤️</div>
-            <div className="weather-temp-bar">--°C</div>
-            <div className="weather-desc-bar">Yükleniyor</div>
-          </>
-        )}
+        <div className="weather-icon-bar">
+          {weather.condition === 'sunny' && '☀️'}
+          {weather.condition === 'cloudy' && '☁️'}
+          {weather.condition === 'rainy' && '🌧️'}
+          {weather.condition === 'cold' && '❄️'}
+        </div>
+        <div className="weather-temp-bar">{weather.temperature}°C</div>
+        <div className="weather-desc-bar">
+          {weather.condition === 'sunny' && 'Güneşli'}
+          {weather.condition === 'cloudy' && 'Bulutlu'}
+          {weather.condition === 'rainy' && 'Yağmurlu'}
+          {weather.condition === 'cold' && 'Soğuk'}
+        </div>
+        <div className="weather-recommendation-bar">
+          {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
+          {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
+          {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
+        </div>
       </div>
 
       {combinations.length === 0 ? (
