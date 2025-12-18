@@ -13,11 +13,6 @@ const HomePage = () => {
   const [selectedColor, setSelectedColor] = useState('all');
   const [selectedStyle, setSelectedStyle] = useState('all');
   const [activeSidebarCategory, setActiveSidebarCategory] = useState('all');
-  const [weather, setWeather] = useState({
-    temperature: 20,
-    condition: 'sunny',
-    recommendation: 'normal'
-  });
   const navigate = useNavigate();
 
   const sidebarCategories = [
@@ -31,18 +26,7 @@ const HomePage = () => {
 
   useEffect(() => {
     loadWardrobe();
-    loadWeather();
   }, []);
-
-  const loadWeather = async () => {
-    try {
-      const response = await fetch('http://localhost:5001/api/weather');
-      const data = await response.json();
-      setWeather(data);
-    } catch (error) {
-      console.error('Error loading weather:', error);
-    }
-  };
 
   useEffect(() => {
     if (wardrobe.length >= 2) {
