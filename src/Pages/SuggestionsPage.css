@@ -17,44 +17,40 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.weather-section-suggestions {
+.weather-banner-bar {
   background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
-}
-
-.weather-section-suggestions h2 {
-  font-size: 1.8rem;
-  color: #333;
+  padding: 12px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.weather-card-suggestions {
-  text-align: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 15px;
+.weather-icon-bar {
+  font-size: 1.8rem;
 }
 
-.weather-temp-suggestions {
-  font-size: 3rem;
+.weather-temp-bar {
+  font-size: 1.5rem;
   font-weight: 700;
   color: #667eea;
-  margin-bottom: 10px;
+  min-width: 60px;
 }
 
-.weather-condition-suggestions {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.weather-recommendation-suggestions {
+.weather-desc-bar {
   font-size: 1rem;
   color: #666;
-  font-style: italic;
+  flex: 1;
+}
+
+.weather-recommendation-bar {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
+  text-align: right;
 }
 
 .suggestions-header h1 {

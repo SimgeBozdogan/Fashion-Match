@@ -58,25 +58,36 @@ const SuggestionsPage = () => {
         <button onClick={() => navigate('/')} className="back-btn">Ana Sayfaya Dön</button>
       </div>
 
-      {weather && (
-        <div className="weather-section-suggestions">
-          <h2>Hava Durumu</h2>
-          <div className="weather-card-suggestions">
-            <div className="weather-temp-suggestions">{weather.temperature}°C</div>
-            <div className="weather-condition-suggestions">
-              {weather.condition === 'sunny' && '☀️ Güneşli'}
-              {weather.condition === 'cloudy' && '☁️ Bulutlu'}
-              {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
-              {weather.condition === 'cold' && '❄️ Soğuk'}
+      <div className="weather-banner-bar">
+        {weather ? (
+          <>
+            <div className="weather-icon-bar">
+              {weather.condition === 'sunny' && '☀️'}
+              {weather.condition === 'cloudy' && '☁️'}
+              {weather.condition === 'rainy' && '🌧️'}
+              {weather.condition === 'cold' && '❄️'}
             </div>
-            <div className="weather-recommendation-suggestions">
-              {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
-              {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
-              {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
+            <div className="weather-temp-bar">{weather.temperature}°C</div>
+            <div className="weather-desc-bar">
+              {weather.condition === 'sunny' && 'Güneşli'}
+              {weather.condition === 'cloudy' && 'Bulutlu'}
+              {weather.condition === 'rainy' && 'Yağmurlu'}
+              {weather.condition === 'cold' && 'Soğuk'}
             </div>
-          </div>
-        </div>
-      )}
+            <div className="weather-recommendation-bar">
+              {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
+              {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
+              {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="weather-icon-bar">🌤️</div>
+            <div className="weather-temp-bar">--°C</div>
+            <div className="weather-desc-bar">Yükleniyor</div>
+          </>
+        )}
+      </div>
 
       {combinations.length === 0 ? (
         <div className="no-suggestions">
