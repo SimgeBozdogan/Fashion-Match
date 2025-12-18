@@ -21,7 +21,6 @@ const SuggestionsPage = () => {
     try {
       const response = await fetch('http://localhost:5001/api/weather');
       const data = await response.json();
-      await new Promise(resolve => setTimeout(resolve, 100));
       setWeather(data);
     } catch (error) {
       console.error('Error loading weather:', error);
