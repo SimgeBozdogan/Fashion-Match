@@ -32,9 +32,6 @@ const HomePage = () => {
     if (wardrobe.length >= 2) {
       loadCombinations();
     }
-  }, [wardrobe]);
-
-  useEffect(() => {
     filterWardrobe();
   }, [wardrobe, searchTerm, selectedCategory, selectedColor, selectedStyle, activeSidebarCategory]);
 
@@ -43,6 +40,7 @@ const HomePage = () => {
       const response = await fetch('http://localhost:5001/api/wardrobe');
       const data = await response.json();
       setWardrobe(data);
+      setFilteredWardrobe(data);
       setLoading(false);
     } catch (error) {
       console.error('Error loading wardrobe:', error);
