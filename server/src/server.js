@@ -684,6 +684,7 @@ app.post('/api/suggestions/smart', (req, res) => {
       filteredItems = filteredItems.filter(item => 
         !['outerwear', 'jacket', 'coat'].includes(item.category?.toLowerCase())
       );
+    } else if (weather === 'rainy') {
     }
 
     const occasionStyles = {
