@@ -187,28 +187,27 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="weather-banner-bar">
-        <div className="weather-icon-bar">
-          {weather.condition === 'sunny' && '☀️'}
-          {weather.condition === 'cloudy' && '☁️'}
-          {weather.condition === 'rainy' && '🌧️'}
-          {weather.condition === 'cold' && '❄️'}
-        </div>
-        <div className="weather-temp-bar">{weather.temperature}°C</div>
-        <div className="weather-desc-bar">
-          {weather.condition === 'sunny' && 'Güneşli'}
-          {weather.condition === 'cloudy' && 'Bulutlu'}
-          {weather.condition === 'rainy' && 'Yağmurlu'}
-          {weather.condition === 'cold' && 'Soğuk'}
-        </div>
-        <div className="weather-recommendation-bar">
-          {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
-          {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
-          {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
-        </div>
-      </div>
-
       <div className="main-content">
+        <div className="weather-banner-bar">
+          <div className="weather-icon-bar">
+            {weather.condition === 'sunny' && '☀️'}
+            {weather.condition === 'cloudy' && '☁️'}
+            {weather.condition === 'rainy' && '🌧️'}
+            {weather.condition === 'cold' && '❄️'}
+          </div>
+          <div className="weather-temp-bar">{weather.temperature}°C</div>
+          <div className="weather-desc-bar">
+            {weather.condition === 'sunny' && 'Güneşli'}
+            {weather.condition === 'cloudy' && 'Bulutlu'}
+            {weather.condition === 'rainy' && 'Yağmurlu'}
+            {weather.condition === 'cold' && 'Soğuk'}
+          </div>
+          <div className="weather-recommendation-bar">
+            {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
+            {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
+            {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
+          </div>
+        </div>
         <div className="categories-sidebar">
           <h3>Kategoriler</h3>
           <ul className="category-list">
