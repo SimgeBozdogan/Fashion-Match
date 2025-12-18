@@ -58,6 +58,25 @@ const SuggestionsPage = () => {
         <button onClick={() => navigate('/')} className="back-btn">Ana Sayfaya Dön</button>
       </div>
 
+      {weather && (
+        <div className="weather-widget-suggestions">
+          <div className="weather-info">
+            <div className="weather-temp-small">{weather.temperature}°C</div>
+            <div className="weather-condition-small">
+              {weather.condition === 'sunny' && '☀️ Güneşli'}
+              {weather.condition === 'cloudy' && '☁️ Bulutlu'}
+              {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
+              {weather.condition === 'cold' && '❄️ Soğuk'}
+            </div>
+          </div>
+          <div className="weather-recommendation-small">
+            {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
+            {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
+            {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
+          </div>
+        </div>
+      )}
+
       {combinations.length === 0 ? (
         <div className="no-suggestions">
           <p>Henüz yeterli kıyafet eklenmemiş. Önce gardırobuna kıyafet ekleyin!</p>
