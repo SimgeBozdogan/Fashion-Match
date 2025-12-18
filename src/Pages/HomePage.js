@@ -14,7 +14,6 @@ const HomePage = () => {
   const [selectedStyle, setSelectedStyle] = useState('all');
   const [activeSidebarCategory, setActiveSidebarCategory] = useState('all');
   const [weather, setWeather] = useState(null);
-  const [weatherLoading, setWeatherLoading] = useState(true);
   const navigate = useNavigate();
 
   const sidebarCategories = [
@@ -184,52 +183,25 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="weather-banner">
-        <div className="weather-content">
-          {weatherLoading ? (
-            <>
-              <div className="weather-icon-large">🌤️</div>
-              <div className="weather-text">
-                <div className="weather-temp-main">...</div>
-                <div className="weather-desc">Yükleniyor</div>
-              </div>
-              <div className="weather-recommendation-main">Hava durumu alınıyor</div>
-            </>
-          ) : weather ? (
-            <>
-              <div className="weather-icon-large">
-                {weather.condition === 'sunny' && '☀️'}
-                {weather.condition === 'cloudy' && '☁️'}
-                {weather.condition === 'rainy' && '🌧️'}
-                {weather.condition === 'cold' && '❄️'}
-              </div>
-              <div className="weather-text">
-                <div className="weather-temp-main">{weather.temperature}°C</div>
-                <div className="weather-desc">
-                  {weather.condition === 'sunny' && 'Güneşli'}
-                  {weather.condition === 'cloudy' && 'Bulutlu'}
-                  {weather.condition === 'rainy' && 'Yağmurlu'}
-                  {weather.condition === 'cold' && 'Soğuk'}
-                </div>
-              </div>
-              <div className="weather-recommendation-main">
-                {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
-                {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
-                {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="weather-icon-large">🌤️</div>
-              <div className="weather-text">
-                <div className="weather-temp-main">--°C</div>
-                <div className="weather-desc">Hava durumu alınamadı</div>
-              </div>
-              <div className="weather-recommendation-main">Yeniden yüklemeyi deneyin</div>
-            </>
-          )}
+      {weather && (
+        <div className="weather-section-homepage">
+          <h2>Hava Durumu</h2>
+          <div className="weather-card-homepage">
+            <div className="weather-temp-homepage">{weather.temperature}°C</div>
+            <div className="weather-condition-homepage">
+              {weather.condition === 'sunny' && '☀️ Güneşli'}
+              {weather.condition === 'cloudy' && '☁️ Bulutlu'}
+              {weather.condition === 'rainy' && '🌧️ Yağmurlu'}
+              {weather.condition === 'cold' && '❄️ Soğuk'}
+            </div>
+            <div className="weather-recommendation-homepage">
+              {weather.recommendation === 'cold' && 'Kalın giysiler önerilir'}
+              {weather.recommendation === 'hot' && 'İnce ve hafif giysiler önerilir'}
+              {weather.recommendation === 'normal' && 'Normal giyim uygundur'}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="main-content">
         <div className="categories-sidebar">
