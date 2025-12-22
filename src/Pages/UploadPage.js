@@ -37,7 +37,7 @@ const UploadPage = () => {
     e.preventDefault();
     
     if (!imageFile) {
-      alert('Lütfen bir resim seçin');
+      alert('Please select an image');
       return;
     }
 
@@ -71,11 +71,11 @@ const UploadPage = () => {
         }
       } else {
         const errorData = await response.json().catch(() => ({ error: response.statusText }));
-        alert('Yükleme hatası: ' + (errorData.error || response.statusText));
+        alert('Upload error: ' + (errorData.error || response.statusText));
       }
     } catch (error) {
       console.error('Error uploading:', error);
-      alert('Yükleme sırasında bir hata oluştu: ' + error.message);
+      alert('An error occurred during upload: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -84,12 +84,12 @@ const UploadPage = () => {
   return (
     <div className="upload-page">
       <div className="upload-container">
-        <h2>Kıyafetini Yükle</h2>
-        <p className="upload-description">Gardırobuna kıyafet ekle, kombin önerilerini gör</p>
+        <h2>Upload Item</h2>
+        <p className="upload-description">Add items to your wardrobe, see outfit suggestions</p>
         
         <form onSubmit={handleSubmit} className="upload-form">
           <div className="form-group">
-            <label>Resim Seç *</label>
+            <label>Select Image *</label>
             <input 
               type="file" 
               accept="image/*" 
@@ -104,17 +104,17 @@ const UploadPage = () => {
           </div>
 
           <div className="form-group">
-            <label>İsim (Opsiyonel)</label>
+            <label>Name (Optional)</label>
             <input 
               type="text" 
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Örn: Beyaz Gömlek"
+              placeholder="e.g., White Shirt"
             />
           </div>
 
           <div className="form-group">
-            <label>Kategori *</label>
+            <label>Category *</label>
             <select 
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -122,28 +122,28 @@ const UploadPage = () => {
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>
-                  {cat === 'top' ? 'Üst (Gömlek, T-shirt, vb.)' :
-                   cat === 'bottom' ? 'Alt (Pantolon, Etek, vb.)' :
-                   cat === 'shoes' ? 'Ayakkabı' :
-                   cat === 'outerwear' ? 'Dış Giyim (Ceket, Hırka, vb.)' :
-                   cat === 'accessories' ? 'Aksesuar' : 'Diğer'}
+                  {cat === 'top' ? 'Top (Shirt, T-shirt, etc.)' :
+                   cat === 'bottom' ? 'Bottom (Pants, Skirt, etc.)' :
+                   cat === 'shoes' ? 'Shoes' :
+                   cat === 'outerwear' ? 'Outerwear (Jacket, Cardigan, etc.)' :
+                   cat === 'accessories' ? 'Accessories' : 'Other'}
                 </option>
               ))}
             </select>
           </div>
 
           <div className="form-group">
-            <label>Renk (Opsiyonel)</label>
+            <label>Color (Optional)</label>
             <input 
               type="text" 
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              placeholder="Örn: Beyaz, Siyah, Mavi"
+              placeholder="e.g., White, Black, Blue"
             />
           </div>
 
           <div className="form-group">
-            <label>Stil *</label>
+            <label>Style *</label>
             <select 
               value={style}
               onChange={(e) => setStyle(e.target.value)}
@@ -151,11 +151,11 @@ const UploadPage = () => {
             >
               {styles.map(s => (
                 <option key={s} value={s}>
-                  {s === 'casual' ? 'Gündelik' :
-                   s === 'formal' ? 'Resmi' :
-                   s === 'sporty' ? 'Spor' :
-                   s === 'elegant' ? 'Şık' :
-                   s === 'bohemian' ? 'Bohem' :
+                  {s === 'casual' ? 'Casual' :
+                   s === 'formal' ? 'Formal' :
+                   s === 'sporty' ? 'Sporty' :
+                   s === 'elegant' ? 'Elegant' :
+                   s === 'bohemian' ? 'Bohemian' :
                    s === 'minimalist' ? 'Minimalist' : s}
                 </option>
               ))}
@@ -163,12 +163,12 @@ const UploadPage = () => {
           </div>
 
           <div className="form-group">
-            <label>Satın Alma Fiyatı (₺) *</label>
+            <label>Purchase Price (₺) *</label>
             <input 
               type="number" 
               value={purchasePrice}
               onChange={(e) => setPurchasePrice(e.target.value)}
-              placeholder="Örn: 299.99"
+              placeholder="e.g., 299.99"
               min="0"
               step="0.01"
               required
@@ -176,7 +176,7 @@ const UploadPage = () => {
           </div>
 
           <div className="form-group">
-            <label>Satın Alma Tarihi - Opsiyonel</label>
+            <label>Purchase Date - Optional</label>
             <input 
               type="date" 
               value={purchaseDate}
@@ -186,10 +186,10 @@ const UploadPage = () => {
 
           <div className="form-actions">
             <button type="button" onClick={() => navigate('/')} className="cancel-btn">
-              İptal
+              Cancel
             </button>
             <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? 'Yükleniyor...' : 'Ekle ve Kombinleri Gör'}
+              {loading ? 'Uploading...' : 'Add & View Combinations'}
             </button>
           </div>
         </form>

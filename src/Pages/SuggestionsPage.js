@@ -46,7 +46,7 @@ const SuggestionsPage = () => {
   if (loading) {
     return (
       <div className="suggestions-page">
-        <div className="loading">Kombinler oluşturuluyor...</div>
+        <div className="loading">Creating combinations...</div>
       </div>
     );
   }
@@ -54,8 +54,8 @@ const SuggestionsPage = () => {
   return (
     <div className="suggestions-page">
       <div className="suggestions-header">
-        <h1>Kombin Önerileri</h1>
-        <button onClick={() => navigate('/')} className="back-btn">Ana Sayfaya Dön</button>
+        <h1>Outfit Suggestions</h1>
+        <button onClick={() => navigate('/')} className="back-btn">Back to Home</button>
       </div>
 
       {weather && (
@@ -68,24 +68,24 @@ const SuggestionsPage = () => {
           </div>
           <div className="weather-temp-bar">{weather.temperature}°C</div>
           <div className="weather-desc-bar">
-            {weather.condition === 'sunny' && 'Güneşli'}
-            {weather.condition === 'cloudy' && 'Bulutlu'}
-            {weather.condition === 'rainy' && 'Yağmurlu'}
-            {weather.condition === 'cold' && 'Soğuk'}
+            {weather.condition === 'sunny' && 'Sunny'}
+            {weather.condition === 'cloudy' && 'Cloudy'}
+            {weather.condition === 'rainy' && 'Rainy'}
+            {weather.condition === 'cold' && 'Cold'}
           </div>
           <div className="weather-recommendation-bar">
-            {weather.recommendation === 'cold' && '🧥 Kalın giysiler önerilir'}
-            {weather.recommendation === 'hot' && '👕 İnce ve hafif giysiler önerilir'}
-            {weather.recommendation === 'rainy' && '☔ Yağmurluk veya şemsiye almanızı öneririz'}
-            {weather.recommendation === 'normal' && '👔 Normal giyim uygundur'}
+            {weather.recommendation === 'cold' && '🧥 Thick clothing recommended'}
+            {weather.recommendation === 'hot' && '👕 Light and thin clothing recommended'}
+            {weather.recommendation === 'rainy' && '☔ Raincoat or umbrella recommended'}
+            {weather.recommendation === 'normal' && '👔 Normal clothing is suitable'}
           </div>
         </div>
       )}
 
       {combinations.length === 0 ? (
         <div className="no-suggestions">
-          <p>Henüz yeterli kıyafet eklenmemiş. Önce gardırobuna kıyafet ekleyin!</p>
-          <button onClick={() => navigate('/upload')}>Kıyafet Ekle</button>
+          <p>Not enough items added yet. Please add items to your wardrobe first!</p>
+          <button onClick={() => navigate('/upload')}>Add Item</button>
         </div>
       ) : (
         <div className="combinations-grid">
@@ -112,19 +112,19 @@ const SuggestionsPage = () => {
 
               {combination.missingItems && combination.missingItems.length > 0 && (
                 <div className="missing-items">
-                  <h4>Bu Parçayı da Ekleyebilirsiniz:</h4>
+                  <h4>You Can Also Add This Item:</h4>
                   {combination.missingItems.map((missing, missingIndex) => (
                     <div key={missingIndex} className="missing-item">
                       <div className="missing-item-info">
                         <p className="missing-item-name">{missing.itemName || missing.category}</p>
-                        <p className="missing-item-desc">{missing.description || `${missing.category} bu kombini tamamlar`}</p>
+                        <p className="missing-item-desc">{missing.description || `${missing.category} completes this combination`}</p>
                       </div>
                       {missing.purchaseLink && (
                         <button 
                           className="purchase-btn"
                           onClick={() => handlePurchaseLink(missing.purchaseLink)}
                         >
-                          Mağazada Gör
+                          View in Store
                         </button>
                       )}
                     </div>
@@ -134,7 +134,7 @@ const SuggestionsPage = () => {
 
               {combination.suggestions && combination.suggestions.length > 0 && (
                 <div className="suggestions-list">
-                  <h4>Öneriler:</h4>
+                  <h4>Suggestions:</h4>
                   {combination.suggestions.map((suggestion, sugIndex) => (
                     <div key={sugIndex} className="suggestion-item">
                       <p>{suggestion.description}</p>
@@ -143,7 +143,7 @@ const SuggestionsPage = () => {
                           className="purchase-btn"
                           onClick={() => handlePurchaseLink(suggestion.purchaseLink)}
                         >
-                          Satın Al
+                          Purchase
                         </button>
                       )}
                     </div>
