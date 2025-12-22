@@ -290,7 +290,7 @@ function generateCombinations(wardrobeItems) {
         combination.missingItems.push({
           category: 'outerwear',
           itemName: 'Outerwear',
-          description: `${topStyle} tarzda bir ceket veya hırka ekleyebilirsiniz`,
+          description: `You can add a ${topStyle} style jacket or cardigan`,
           purchaseLink: getPurchaseLink('outerwear', topStyle, 'unknown')
         });
       }
